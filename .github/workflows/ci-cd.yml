@@ -54,6 +54,6 @@ jobs:
         with:
           host: ${{secrets.EC2_HOST}}
           username: ubuntu
-          password: ${{secrets.EC2_PASSWORD}}
+          key: ${{secrets.EC2_PASSWORD}}
           script: \
-            docker pull leesoylee/actions-practice:latest
+            echo "hello $USER"
