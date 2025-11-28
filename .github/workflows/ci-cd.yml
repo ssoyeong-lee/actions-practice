@@ -56,4 +56,9 @@ jobs:
           username: ubuntu
           key: ${{secrets.EC2_PASSWORD}}
           script: |
-            echo "hello $USER"
+            docker pull leesoylee/actions-practice:latest
+            docker stop app || true
+            docker rm app || true
+            docker image prune -f || true
+            docker run -d --name app -p 8080:8080 leesoylee/actions-practice:latest
+            docker logs app
