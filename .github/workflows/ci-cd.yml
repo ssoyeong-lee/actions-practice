@@ -42,3 +42,23 @@ jobs:
           context: .
           push: true
           tags: leesoylee/actions-practice:latest
+  deploy:
+    name: Deploy to EC2
+    needs: build
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connect and Deploy using SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{secrets.EC2_HOST}}
+          username: ubuntu
+          key: ${{secrets.EC2_PASSWORD}}
+          script: |
+            docker pull leesoylee/actions-practice:latest
+            docker stop app || true
+            docker rm app || true
+            docker image prune -f || true
+            docker run -d --name app -p 8080:8080 leesoylee/actions-practice:latest
+            docker logs app
